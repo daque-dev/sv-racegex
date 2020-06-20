@@ -5,16 +5,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	mux := http.NewServeMux()
+	r := mux.NewRouter()
 
-	mux.HandleFunc("/problems", getProblems)
-	mux.HandleFunc("/problem", getProblem)
+	r.HandleFunc("/problems", getProblems).Methods("GET")
+	r.HandleFunc("/problems/{id}", getProblem).Methods("GET")
 
 	log.Println(fmt.Sprintf("Server running on http://localhost%s", ":4000"))
-	err := http.ListenAndServe(":4000", mux)
+	err := http.ListenAndServe(":4000", r)
 	if err != nil {
 		log.Fatalf("could not run the server %v", err)
 		return
@@ -31,9 +33,24 @@ func getProblems(w http.ResponseWriter, r *http.Request) {
 }
 
 func getProblem(w http.ResponseWriter, r *http.Request) {
-	data := Problem{ID: "1", Title: "emails"}
+	// Get the url params of the route
+	params := mux.Vars(r)
 
-	tryToWriteJSON(w, data)
+	// Initialize a mock array of items to look for the id
+	var data []Problem
+
+	data = append(data, Problem{ID: "1", Title: "emails"})
+	data = append(data, Problem{ID: "2", Title: "websites"})
+
+	for _, problem := range data {
+		if problem.ID == params["id"] {
+			tryToWriteJSON(w, problem)
+			return
+		}
+	}
+
+	w.Write([]byte("No such problem ID"))
+
 }
 
 func tryToWriteJSON(w http.ResponseWriter, data interface{}) {
