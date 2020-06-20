@@ -27,20 +27,16 @@ func getProblems(w http.ResponseWriter, r *http.Request) {
 	data = append(data, Problem{ID: "1", Title: "emails"})
 	data = append(data, Problem{ID: "2", Title: "websites"})
 
-	js, err := json.Marshal(data)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
+	tryToWriteJSON(w, data)
 }
 
 func getProblem(w http.ResponseWriter, r *http.Request) {
 	data := Problem{ID: "1", Title: "emails"}
 
+	tryToWriteJSON(w, data)
+}
+
+func tryToWriteJSON(w http.ResponseWriter, data interface{}) {
 	js, err := json.Marshal(data)
 
 	if err != nil {
