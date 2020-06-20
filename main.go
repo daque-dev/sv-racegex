@@ -29,7 +29,7 @@ func getProblems(w http.ResponseWriter, r *http.Request) {
 	data = append(data, Problem{ID: "1", Title: "emails"})
 	data = append(data, Problem{ID: "2", Title: "websites"})
 
-	tryToWriteJSON(w, data)
+	json.NewEncoder(w).Encode(data)
 }
 
 func getProblem(w http.ResponseWriter, r *http.Request) {
@@ -44,25 +44,11 @@ func getProblem(w http.ResponseWriter, r *http.Request) {
 
 	for _, problem := range data {
 		if problem.ID == params["id"] {
-			tryToWriteJSON(w, problem)
+			json.NewEncoder(w).Encode(problem)
 			return
 		}
 	}
-
-	w.Write([]byte("No such problem ID"))
-
-}
-
-func tryToWriteJSON(w http.ResponseWriter, data interface{}) {
-	js, err := json.Marshal(data)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(js)
+	json.NewEncoder(w).Encode(Problem{})
 }
 
 // Problem : Contains a problem to challenge the user with
