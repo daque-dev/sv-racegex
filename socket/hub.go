@@ -1,4 +1,4 @@
-package main
+package socket
 
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
@@ -16,7 +16,8 @@ type Hub struct {
 	unregister chan *Client
 }
 
-func newHub() *Hub {
+// NewHub creates an empty hub
+func NewHub() *Hub {
 	return &Hub{
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
@@ -25,7 +26,8 @@ func newHub() *Hub {
 	}
 }
 
-func (h *Hub) run() {
+// Run starts the hub and handles clients leaving or joining, and new messages
+func (h *Hub) Run() {
 	for {
 		select {
 		case client := <-h.register:
