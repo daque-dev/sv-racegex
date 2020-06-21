@@ -23,5 +23,6 @@ Please check https://keepachangelog.com/en/1.0.0/#how
 
 - Start a Go Module using `gorilla/mux` to handle the http server.
 - Add `air` to add hot reload to the app.
+- Use `gorilla/websocket` to connect users.
 
 [`unreleased`]: https://github.com/daque-dev/sv-racegex/tree/develop
