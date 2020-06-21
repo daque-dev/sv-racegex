@@ -12,8 +12,15 @@ import (
 func main() {
 	r := mux.NewRouter()
 
+	hub := newHub()
+	go hub.run()
+
 	r.HandleFunc("/problems", getProblems).Methods("GET")
 	r.HandleFunc("/problems/{id}", getProblem).Methods("GET")
+
+	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hub, w, r)
+	})
 
 	log.Println(fmt.Sprintf("Server running on http://localhost%s", ":4000"))
 	err := http.ListenAndServe(":4000", r)
