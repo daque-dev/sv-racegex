@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	// Create a gorilla/mux router
 	"github.com/gorilla/mux"
 
 	api "racegex/api"
@@ -12,7 +13,6 @@ import (
 )
 
 func main() {
-	// Create a gorilla/mux router
 	r := mux.NewRouter()
 
 	r.HandleFunc("/problems", api.GetProblems).Methods("GET")
