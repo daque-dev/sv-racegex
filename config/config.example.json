@@ -1,0 +1,9 @@
+{
+  "datastore": {
+    "address": "localhost",
+    "port": "5432",
+    "user": "golang",
+    "password": "golang",
+    "database": "racegex"
+  }
+}
