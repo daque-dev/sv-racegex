@@ -1,58 +1,36 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	api "racegex/api"
+	socket "racegex/socket"
 )
 
 func main() {
+	// Create a gorilla/mux router
 	r := mux.NewRouter()
 
-	r.HandleFunc("/problems", getProblems).Methods("GET")
-	r.HandleFunc("/problems/{id}", getProblem).Methods("GET")
+	r.HandleFunc("/problems", api.GetProblems).Methods("GET")
+	r.HandleFunc("/problems/{id}", api.GetProblem).Methods("GET")
 
+	// Create and start the WebSocket Hub
+	hub := socket.NewHub()
+	go hub.Run()
+	// Specify the route for the WebSocket
+	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		socket.ServeWs(hub, w, r)
+	})
+
+	// Start the server
 	log.Println(fmt.Sprintf("Server running on http://localhost%s", ":4000"))
 	err := http.ListenAndServe(":4000", r)
 	if err != nil {
 		log.Fatalf("could not run the server %v", err)
 		return
 	}
-}
-
-func getProblems(w http.ResponseWriter, r *http.Request) {
-	var data []Problem
-
-	data = append(data, Problem{ID: "1", Title: "emails"})
-	data = append(data, Problem{ID: "2", Title: "websites"})
-
-	json.NewEncoder(w).Encode(data)
-}
-
-func getProblem(w http.ResponseWriter, r *http.Request) {
-	// Get the url params of the route
-	params := mux.Vars(r)
-
-	// Initialize a mock array of items to look for the id
-	var data []Problem
-
-	data = append(data, Problem{ID: "1", Title: "emails"})
-	data = append(data, Problem{ID: "2", Title: "websites"})
-
-	for _, problem := range data {
-		if problem.ID == params["id"] {
-			json.NewEncoder(w).Encode(problem)
-			return
-		}
-	}
-	json.NewEncoder(w).Encode(Problem{})
-}
-
-// Problem : Contains a problem to challenge the user with
-type Problem struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
 }
