@@ -16,12 +16,11 @@ How to contribute to the `CHANGELOG`:
   `Removed`.
 - If you find the appropiate category under `[Unreleased]`, append your changes
   on it as a list item. If you don't find it, create it and append your changes.
-  
-- Create configuration directory
-- Added file configuration and functions for get configuration
-
-- Add GORM for database connection
-- Add database file configuration
+- Create configuration directory.
+- Added file configuration and functions for get configuration.
+- Add GORM for database connection.
+- Add database file configuration.
+- Add a configuration file for Deepsource.
 
 Please check https://keepachangelog.com/en/1.0.0/#how
 
