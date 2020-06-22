@@ -26,3 +26,5 @@
 
 # Directory that ./air outputs when hot-reloading the app
 tmp/
+
+config/config.json
