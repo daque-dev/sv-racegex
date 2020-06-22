@@ -27,4 +27,7 @@ Please check https://keepachangelog.com/en/1.0.0/#how
 - Create an initial directory structure that handles routes in `main.go`, but
   delegates all implementations of handlers to `api` and `socket` subpackages.
 
+- Create configuration directory
+- Added file configuration and functions for get configuration
+
 [`unreleased`]: https://github.com/daque-dev/sv-racegex/tree/develop
