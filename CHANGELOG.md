@@ -20,6 +20,9 @@ How to contribute to the `CHANGELOG`:
 - Create configuration directory
 - Added file configuration and functions for get configuration
 
+- Add GORM for database connection
+- Add database file configuration
+
 Please check https://keepachangelog.com/en/1.0.0/#how
 
 ## [`Unreleased`]
