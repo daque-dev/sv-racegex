@@ -26,6 +26,8 @@ func GetConnection() *gorm.DB {
 
 // CloseConnection Close the connection to the database
 func CloseConnection(db *gorm.DB) {
-	db.Close()
+	if err := db.Close(); err != nil {
+		log.Print("Failure: Close connection to database")
+	}
 	log.Print("Successfully: Close connection to database")
 }
