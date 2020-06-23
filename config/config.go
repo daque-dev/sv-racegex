@@ -47,9 +47,7 @@ func GetConfiguration() Configuration {
 
 // GetDatabaseConfiguration Get database configuration
 func GetDatabaseConfiguration() Datastore {
-	var configuration Configuration
-
-	configuration = GetConfiguration()
+	var configuration Configuration = GetConfiguration()
 
 	return configuration.Datastore
 }

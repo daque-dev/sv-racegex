@@ -11,8 +11,7 @@ import (
 
 // GetConnection Create a connection with database, return this connection
 func GetConnection() *gorm.DB {
-	var datastore config.Datastore
-	datastore = config.GetDatabaseConfiguration()
+	var datastore config.Datastore = config.GetDatabaseConfiguration()
 
 	db, err := gorm.Open("postgres", "host="+datastore.Address+" port="+datastore.Port+" user="+datastore.User+" dbname="+datastore.Database+" password="+datastore.Password)
 
