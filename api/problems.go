@@ -2,20 +2,25 @@ package api
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
+// GetProblems gets the list of all the problems
 func GetProblems(w http.ResponseWriter, r *http.Request) {
 	var data []Problem
 
 	data = append(data, Problem{ID: "1", Title: "emails"})
 	data = append(data, Problem{ID: "2", Title: "websites"})
 
-	json.NewEncoder(w).Encode(data)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Printf("Error parsing %-v", data)
+	}
 }
 
+// GetProblem gets a specific problem in the list
 func GetProblem(w http.ResponseWriter, r *http.Request) {
 	// Get the url params of the route
 	params := mux.Vars(r)
@@ -28,7 +33,9 @@ func GetProblem(w http.ResponseWriter, r *http.Request) {
 
 	for _, problem := range data {
 		if problem.ID == params["id"] {
-			json.NewEncoder(w).Encode(problem)
+			if err := json.NewEncoder(w).Encode(problem); err != nil {
+				log.Printf("Error parsing %-v", problem)
+			}
 			return
 		}
 	}

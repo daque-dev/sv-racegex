@@ -11,8 +11,7 @@ import (
 
 // GetConnection Create a connection with database, return this connection
 func GetConnection() *gorm.DB {
-	var datastore config.Datastore
-	datastore = config.GetDatabaseConfiguration()
+	var datastore config.Datastore = config.GetDatabaseConfiguration()
 
 	db, err := gorm.Open("postgres", "host="+datastore.Address+" port="+datastore.Port+" user="+datastore.User+" dbname="+datastore.Database+" password="+datastore.Password)
 
@@ -27,6 +26,8 @@ func GetConnection() *gorm.DB {
 
 // CloseConnection Close the connection to the database
 func CloseConnection(db *gorm.DB) {
-	db.Close()
+	if err := db.Close(); err != nil {
+		log.Print("Failure: Close connection to database")
+	}
 	log.Print("Successfully: Close connection to database")
 }

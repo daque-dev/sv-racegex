@@ -22,7 +22,7 @@ type Datastore struct {
 }
 
 // GetConfiguration Get configuration file
-func GetConfiguration() Configuration {
+func GetConfiguration() (Configuration, error) {
 
 	file, err := os.Open("config/config.json")
 
@@ -40,16 +40,21 @@ func GetConfiguration() Configuration {
 
 	var configuration Configuration
 
-	json.Unmarshal(byteValue, &configuration)
+	if err := json.Unmarshal(byteValue, &configuration); err != nil {
+		return *(*Configuration)(nil), err
+	}
 
-	return configuration
+	return configuration, nil
 }
 
 // GetDatabaseConfiguration Get database configuration
 func GetDatabaseConfiguration() Datastore {
 	var configuration Configuration
-
-	configuration = GetConfiguration()
+	configuration, err := GetConfiguration()
+	if err != nil {
+		log.Print(err)
+		return *(*Datastore)(nil)
+	}
 
 	return configuration.Datastore
 }
