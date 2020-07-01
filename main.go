@@ -15,8 +15,8 @@ func main() {
 	// Create a gorilla/mux router
 	r := mux.NewRouter()
 
-	r.HandleFunc("/problems", api.GetProblems).Methods("GET")
-	r.HandleFunc("/problems/{id}", api.GetProblem).Methods("GET")
+	r.HandleFunc("/problems", api.GetProblems).Methods("GET", "OPTIONS")
+	r.HandleFunc("/problems/{id}", api.GetProblem).Methods("GET", "OPTIONS")
 
 	// Create and start the WebSocket Hub
 	hub := socket.NewHub()

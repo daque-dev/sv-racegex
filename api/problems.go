@@ -8,8 +8,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Set the headers to allow CORS on the received http.ResponseWriter
+func setupCORS(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 // GetProblems gets the list of all the problems
 func GetProblems(w http.ResponseWriter, r *http.Request) {
+	setupCORS(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+
 	var data []Problem
 
 	data = append(data, Problem{ID: "1", Title: "emails"})
@@ -22,6 +34,11 @@ func GetProblems(w http.ResponseWriter, r *http.Request) {
 
 // GetProblem gets a specific problem in the list
 func GetProblem(w http.ResponseWriter, r *http.Request) {
+	setupCORS(&w, r)
+	if (*r).Method == "OPTIONS" {
+		return
+	}
+
 	// Get the url params of the route
 	params := mux.Vars(r)
 
