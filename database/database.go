@@ -1,3 +1,6 @@
+// Package database connects and disconnects the main package to the
+// postgres DB using gorm. The main variable available to any importing
+// package is DBConn.
 package database
 
 import (
@@ -9,11 +12,18 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-// GetConnection Create a connection with database, return this connection
-func GetConnection() *gorm.DB {
+var (
+	// DBConn handles the connection to share between packages
+	DBConn *gorm.DB
+)
+
+// GetConnection creates a connection with the database using the
+// configuration available at racegex/config/config.json
+func GetConnection() {
 	var datastore config.Datastore = config.GetDatabaseConfiguration()
 
-	db, err := gorm.Open("postgres", "host="+datastore.Address+" port="+datastore.Port+" user="+datastore.User+" dbname="+datastore.Database+" password="+datastore.Password)
+	var err error
+	DBConn, err = gorm.Open("postgres", "sslmode=disable host="+datastore.Address+" port="+datastore.Port+" user="+datastore.User+" dbname="+datastore.Database+" password="+datastore.Password)
 
 	if err != nil {
 		log.Fatalf("Error: Connection to database %v", err)
@@ -25,8 +35,8 @@ func GetConnection() *gorm.DB {
 }
 
 // CloseConnection Close the connection to the database
-func CloseConnection(db *gorm.DB) {
-	if err := db.Close(); err != nil {
+func CloseConnection() {
+	if err := DBConn.Close(); err != nil {
 		log.Print("Failure: Close connection to database")
 	}
 	log.Print("Successfully: Close connection to database")
