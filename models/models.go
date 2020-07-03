@@ -7,7 +7,7 @@ package models
 
 // Problem contains the information to challenge a user with
 type Problem struct {
-	ID   int    `json:"id,primary_key"`
+	ID   int    `json:"id"`
 	Name string `gorm:"size:255"`
 
 	Description string `json:"description"`
@@ -15,7 +15,7 @@ type Problem struct {
 
 // Lesson contains one step in the learning roadmap
 type Lesson struct {
-	ID   int    `json:"id,primary_key"`
+	ID   int    `json:"id"`
 	Name string `json:"name" gorm:"size:255"`
 
 	Content    string `json:"content"`
