@@ -6,6 +6,7 @@ package database
 import (
 	"log"
 	"racegex/config"
+	"racegex/models"
 
 	"github.com/jinzhu/gorm"
 	// Postgres Dialect
@@ -30,11 +31,21 @@ func GetConnection() {
 	}
 
 	log.Print("Successfully: Connection to database")
-
-	return db
 }
 
-// CloseConnection Close the connection to the database
+// Migrate creates the necessary tables to fit the app types
+func Migrate() {
+	migrate(&models.Problem{})
+	migrate(&models.Lesson{})
+}
+
+// Delete existing table and automigrate from models
+func migrate(table interface{}) {
+	DBConn.DropTableIfExists(table)
+	DBConn.AutoMigrate(table)
+}
+
+// CloseConnection closes the connection to the database
 func CloseConnection() {
 	if err := DBConn.Close(); err != nil {
 		log.Print("Failure: Close connection to database")
