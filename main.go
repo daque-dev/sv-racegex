@@ -9,10 +9,21 @@ import (
 	"github.com/rs/cors"
 
 	api "racegex/api"
+	"racegex/database"
+	"racegex/seeds"
 	socket "racegex/socket"
 )
 
 func main() {
+	// This creates the database.DBConn that is accessible by all packages
+	database.GetConnection()
+	// Create the Tables for the racegex/models
+	database.Migrate()
+	// Seed the database
+	seeds.Seed()
+	// Close the connection when the main function returns
+	defer database.CloseConnection()
+
 	// Create a gorilla/mux router
 	r := mux.NewRouter()
 
