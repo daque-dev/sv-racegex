@@ -44,7 +44,7 @@ func main() {
 	log.Println(fmt.Sprintf("Server running on http://localhost%s", ":4000"))
 	err := http.ListenAndServe(":4000", cors.Default().Handler(r))
 	if err != nil {
-		log.Fatalf("could not run the server %v", err)
+		log.Panicf("could not run the server %v", err)
 		return
 	}
 }
