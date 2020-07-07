@@ -19,6 +19,8 @@ type Datastore struct {
 	User     string `json:"user"`
 	Password string `json:"password"`
 	Database string `json:"database"`
+	Drop     bool
+	Migrate  bool
 }
 
 // GetConfiguration Get configuration file
