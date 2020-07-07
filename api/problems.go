@@ -32,7 +32,7 @@ func GetProblem(w http.ResponseWriter, r *http.Request) {
 
 	problem := models.Problem{}
 
-	res := database.DBConn.First(&problem, params["id"])
+	res := database.DBConn.Where("id = ?", params["id"]).First(&problem)
 
 	if res.Error != nil {
 		log.Printf("Couldn't get problem %-v", params["id"])
