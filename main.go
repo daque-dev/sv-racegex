@@ -31,6 +31,8 @@ func main() {
 	r.HandleFunc("/problems/{id}", api.GetProblem)
 	r.HandleFunc("/lessons", api.GetLessons)
 	r.HandleFunc("/lessons/{id}", api.GetLesson)
+	r.HandleFunc("/levels", api.GetLevels)
+	r.HandleFunc("/levels/{id}", api.GetLevel)
 
 	// Create and start the WebSocket Hub
 	hub := socket.NewHub()
