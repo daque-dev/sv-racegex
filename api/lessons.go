@@ -32,7 +32,7 @@ func GetLesson(w http.ResponseWriter, r *http.Request) {
 
 	lesson := models.Lesson{}
 
-	res := database.DBConn.First(&models.Lesson{}, params["id"])
+	res := database.DBConn.Where("id = ?", params["id"]).First(&lesson)
 
 	if res.Error != nil {
 		log.Printf("Couldn't get lesson %-v", params["id"])
