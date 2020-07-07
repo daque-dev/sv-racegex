@@ -4,6 +4,8 @@
     "port": "5432",
     "user": "golang",
     "password": "golang",
-    "database": "racegex"
+    "database": "racegex",
+    "migrate": true,
+    "drop": true
   }
 }
