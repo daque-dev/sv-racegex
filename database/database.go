@@ -54,6 +54,8 @@ func Migrate() {
 	log.Print("Migrating models")
 	migrate(&models.Problem{})
 	migrate(&models.Lesson{})
+	migrate(&models.Level{})
+	DBConn.Model(&models.Lesson{}).AddForeignKey("level_id", "levels(id)", "CASCADE", "CASCADE")
 }
 
 // Delete existing table and automigrate from models
