@@ -33,20 +33,20 @@
       ;; if it wasn't a valid websocket handshake, return an error
                 non-websocket-request
       ;; otherwise, take the first two messages, which give us the chatroom and name
-                ((d/let-flow [room (s/take! conn)
-                              name (s/take! conn)]
-      ;; take all messages from the chatroom, and feed them to the client
-                             (s/connect
-                              (bus/subscribe chatrooms room)
-                              conn)
-      ;; take all messages from the client, and publish it to the room
-                             (s/consume
-                              #(bus/publish! chatrooms room %)
-                              (->> conn
-                                   (s/map #(str %))
-                                   (s/buffer 100)))
-      ;; Compojure expects some sort of HTTP response, so just give it `nil`
-                             nil)))))
+                (d/let-flow [room (s/take! conn)
+                             name (s/take! conn)]
+        ;; take all messages from the chatroom, and feed them to the client
+                            (s/connect
+                             (bus/subscribe chatrooms room)
+                             conn)
+        ;; take all messages from the client, prepend the name, and publish it to the room
+                            (s/consume
+                             #(bus/publish! chatrooms room %)
+                             (->> conn
+                                  (s/map #(str %))
+                                  (s/buffer 100)))
+        ;; Compojure expects some sort of HTTP response, so just give it `nil`
+                            nil))))
 
 (def handler
   (params/wrap-params
