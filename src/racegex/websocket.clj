@@ -27,7 +27,6 @@
 
 (defn join-handler
   [socket room user]
-    (println "got a user " room " " user)
     (swap! users-per-room insert-user room user)
     (s/connect
       (bus/subscribe rooms room)
@@ -44,7 +43,6 @@
                 non-websocket-request
                 (d/let-flow [message-str (s/take! socket)]
 		  (let [message (json/read-str message-str :key-fn keyword)]
-		   (println message)
 		    (if (= (get message :type) "join")
 		      (let
 		        [room (get message :room)
@@ -62,7 +60,6 @@
 
 
 (defn serve []
-  (println (json/read-str "{\"test\": 10}" :key-fn keyword))
   (http/start-server handler
 ;; FIXME: We should decide the port to use
                      {:port 5000}))
